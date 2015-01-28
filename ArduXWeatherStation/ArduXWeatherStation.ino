@@ -256,7 +256,7 @@ void setup() {
   
     // IMPORTANT!! To get correct values you MUST CHANGE init() parameters, in 
     // this example I've set 364m (Locate in Fabro (TR) ITALY) based on GPS data for my location.
-    // example dps.init(MODE_ULTRA_HIGHRES, 25000, true);  // for 250 meters, true = using meter units
+    // example dps.init(MODE_ULTRA_HIGHRES, 36400, true);  // for 364 meters, true = using meter units
     dps.init(MODE_ULTRA_HIGHRES, -- YOUR ALTITUDE --, true);  // insert you altitude, true = using meter units
                       // this initialization is useful if current altitude is known,
                       // pressure will be calculated based on TruePressure and known altitude.
