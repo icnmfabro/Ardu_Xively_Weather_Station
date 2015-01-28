@@ -90,7 +90,7 @@ XivelyDatastream datastreams[] = {
 // Finally, wrap the datastreams into a feed
 // IMPORTANT!! Insert your XIVELY FEED ID in the fuction  below 
 // example XivelyFeed feed(1198905638, datastreams, 26 /* number of datastreams */); 
-XivelyFeed feed("--    XIVELY FEED ID    --", datastreams, 26 /* number of datastreams */);
+XivelyFeed feed(--    XIVELY FEED ID    --, datastreams, 26 /* number of datastreams */);
  
 // fill in your address here:
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
@@ -257,7 +257,7 @@ void setup() {
     // IMPORTANT!! To get correct values you MUST CHANGE init() parameters, in 
     // this example I've set 364m (Locate in Fabro (TR) ITALY) based on GPS data for my location.
     // example dps.init(MODE_ULTRA_HIGHRES, 25000, true);  // for 250 meters, true = using meter units
-    dps.init(MODE_ULTRA_HIGHRES, 36400, true);  // 364 meters, true = using meter units
+    dps.init(MODE_ULTRA_HIGHRES, -- YOUR ALTITUDE --, true);  // insert you altitude, true = using meter units
                       // this initialization is useful if current altitude is known,
                       // pressure will be calculated based on TruePressure and known altitude.
 
