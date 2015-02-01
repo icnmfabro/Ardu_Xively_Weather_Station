@@ -1,6 +1,6 @@
 
 // Integration and Development Copyright (c) 2015 Massimiliano Neri
-// ArduXWeatherStation V. 1.1
+// ArduXWeatherStation V. 1.2
 // E-mail: icnmfabro@gmail.com
 
 // Arduino Wire library 
@@ -26,9 +26,29 @@
 
 // Your Xively key to let you upload data
 // IMPORTANT!! Insert your XIVELY ID KEY in the variable char below
-// example char xivelyKey[] = "WEYasBhp2ukzeeVYYfEYvPUkyX87fGfTmDfkqPHyumLNT4aa";
-char xivelyKey[] = "--    YOUR XIVELY ID KEY    --";
+// IMPORTANT!! Insert your XIVELY FEED ID in the fuction  below 
+#define APIKEY         "-- Your Xively key --" // replace your xively api key here
+#define FEEDID         0000000000 // replace your feed ID
+// Your altitude in meters where is located your own weather station 
+// IMPORTANT!! Insert your geographical altitude weather station in meters for setting BMP085
+// IMPORTANT!! To get correct values you MUST CHANGE init() parameters, in 
+// for example insert 364m (Locate in Fabro (TR) ITALY) based on GPS data for my location.
+// long ALTITUDE     =    364
+long ALTITUDE     =    000; // replace your altitude in meters
+/*
+Set the string variable TIMEZONE with the time zone of your country. 
+for example, Italy is in the first time zone then the string variable will be:
 
+String  TIMEZONE  =    "+1"
+
+for other countries just replace the time zone in the syntax as written above.
+If you live in New York (USA), the time zone is -5, then the line syntax is:
+
+String  TIMEZONE  =    "-5"
+
+IMPORTANT: Add the arithmetic symbol + or - before the time zone
+*/
+String  TIMEZONE  =    "+0"; // replace your time zone
 // Define the strings for our datastream IDs
 String stringId("A__DATE_AND_DAY_READING");
 String stringIt("B__TIME_READING");
@@ -88,10 +108,8 @@ XivelyDatastream datastreams[] = {
   XivelyDatastream(stringUvw, DATASTREAM_STRING)
 };
 // Finally, wrap the datastreams into a feed
-// IMPORTANT!! Insert your XIVELY FEED ID in the fuction  below 
-// example XivelyFeed feed(1198905638, datastreams, 26 /* number of datastreams */); 
-XivelyFeed feed(--    XIVELY FEED ID    --, datastreams, 26 /* number of datastreams */);
- 
+XivelyFeed feed(FEEDID, datastreams, 26 /* number of datastreams */);  
+
 // fill in your address here:
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 //the IP address for the shield:
@@ -105,6 +123,10 @@ byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
    * Last Updated - March 21, 2012
    * Open Ocean Reef Controller by Brandon Bearden 
 */
+
+EthernetClient client;
+XivelyClient xivelyclient(client);
+
 IPAddress timeServer(192, 43, 244, 18); 		// time.nist.gov NTP server (fallback)
 /* Set this to the offset (in seconds) to your local time
    This example is GMT - 6 */
@@ -131,9 +153,6 @@ time_t prevDisplay = 0;
 // Statements DNS for NTP server
 DNSClient Dns;
 IPAddress rem_add;
-
-EthernetClient client;
-XivelyClient xivelyclient(client);
 
 // class default I2C address is 0x77
 // specific I2C addresses may be passed as a parameter here
@@ -167,24 +186,14 @@ unsigned int UV_value = 0;
 String       UVCcode = " ";
 String       UVStrenght = " ";
 String       UVWarnings = " ";
-/*
-Set the string variable "Tzone" with the time zone of your country. 
-for example, Italy is in the first time zone then the string variable will be:
 
-TZone String = "UTC +1.00";
-
-for other countries just replace the time zone in the syntax as written above.
-If you live in New York (USA), the time zone is -5, then the line syntax is:
-
-TZone String = "UTC -5.00";
-
-SET WITH UTC TIME (SEE ALSO GMT) THE DS1307. 
-DO NOT TAKE INTO ACCOUNT THE TIME SAVING. 
-TO ADJUST THE DS1307, SEE THE FOLLOWING LINES.
-*/
+// SET WITH UTC TIME (SEE ALSO GMT) THE DS1307. 
+// DO NOT TAKE INTO ACCOUNT THE TIME SAVING. 
+// TO ADJUST THE DS1307, SEE THE FOLLOWING LINES.
 String Datews = " ";
 String Timews = " ";
-String TZone = "UTC +1.00";
+String TZone = "UTC " + TIMEZONE;
+
 // DHT11/22 Library - Written by ladyada, public domain:
 #include "DHT.h"
 #define DHTPIN 2     // what pin we're connected to
@@ -235,7 +244,7 @@ void setup() {
     while (Ethernet.begin(mac) != 1)
     {
       // Serial.println("Error getting IP address via DHCP, trying again...");
-      delay(5000);
+      delay(100);
     }   
     // join I2C bus (Wire library)
     Wire.begin();
@@ -254,10 +263,8 @@ void setup() {
                       // this initialization is useful for normalizing pressure to specific datum.
                       // OR setting current local hPa information from a weather station/local airport (QNH).
   
-    // IMPORTANT!! To get correct values you MUST CHANGE init() parameters, in 
-    // this example I've set 364m (Locate in Fabro (TR) ITALY) based on GPS data for my location.
-    // example dps.init(MODE_ULTRA_HIGHRES, 36400, true);  // for 364 meters, true = using meter units
-    dps.init(MODE_ULTRA_HIGHRES, -- YOUR ALTITUDE --, true);  // insert you altitude, true = using meter units
+    long ALTITUDEWS = ALTITUDE * 100;
+    dps.init(MODE_ULTRA_HIGHRES, 36400, true);  // geographical altitude weather station, true = using meter units
                       // this initialization is useful if current altitude is known,
                       // pressure will be calculated based on TruePressure and known altitude.
 
@@ -381,16 +388,16 @@ void Clock() {
   
     DateTime RTCnow = rtc.now();
   
-    if ((RTCnow.hour() == 0 && SyncB == 0) || SyncA == 0) {
+    if ((RTCnow.hour() == 12 && SyncB == 0) || SyncA == 0) {
        syncRtcfromNtp();
        SyncA = 1;
        SyncB = 1;
     }
-    else if (RTCnow.hour() > 0)
+    else if (RTCnow.hour() != 12 && SyncB != 0)
     {
        SyncB = 0;
-    }
-  
+    }  
+    
     // Assign value date and time for transmitter 433mhz
     Transmit_Value[0] = RTCnow.hour();
     Transmit_Value[1] = RTCnow.minute();
@@ -790,7 +797,7 @@ void SensorXively() {
     stringValue = UVWarnings;
     datastreams[25].setString(stringValue);  
   
-    int ret = xivelyclient.put(feed, xivelyKey);
+    int ret = xivelyclient.put(feed, APIKEY);
   
     delay(10000);
 }
@@ -976,11 +983,11 @@ void syncRtcfromNtp(){
         } 
         */    
     }    
-    // Display the time if it has changed by more than a second.
+    // Sync the time if it has changed by more than a second.
     if( now() != prevDisplay){
         prevDisplay = now();
-        rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second())); 
+        rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));
+        // wait ten seconds before asking for the time again
+        delay(10000);  
     }
-    // wait ten seconds before asking for the time again
-    delay(10000); 
 }

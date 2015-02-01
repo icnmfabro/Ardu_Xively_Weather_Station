@@ -1,0 +1,30 @@
+LIST OF UPDATES TO V. 1.2
+
+IT
+
+- Aggiunte le costanti e le variabili APIKEY, FEEDID, ALTITUDE, TIMEZONE per una migliore configurazione dello sketch.
+- Fissati alcuni bug.
+
+EN
+
+- Added constants and variables apikey, FEEDID, ALTITUDE, TIMEZONE for better configuration of the sketch.
+- Fixed some bugs.
+
+
+LIST OF UPDATES TO V. 1.1
+
+IT
+
+- Nuove librerie "RTClib, Time,  DataCoder e VirtualWire". Modifiche alle librerie "Time e DataCoder".
+- Modifiche per l'inserimento dell'ora e data esatta con relativa sincronizzazione dell'RTC tramite aggiornamento su un server NTP, ogni giorno a mezzanotte.
+- Nuovo progetto per la visualizzazione remota in telemetria dei dati della stazione meteo tramite display TFT touch e ricevitore a 433Mhz XD-RF-5V,  con relativo sketch.
+- Aggiunta alla stazione meteo il trasmettitore a 433Mhz FS1000A per l'invio remoto dei dati in telemetria.
+- Fissati alcuni bug.
+
+EN
+
+- New libraries "RTClib , Time , DataCoder and VirtualWire". Changes to the libraries "Time and DataCoder" .
+- Changes to the insertion time and exact date with relative synchronization via RTC update of an NTP server , each day at midnight .
+- New project for remote viewing telemetry data weather station via TFT touch and receiver 433Mhz XD - RF - 5V , with its sketch.
+- Adding to the weather station at the transmitter 433Mhz FS1000A for sending remote data telemetry .
+- Fixed some bugs .
