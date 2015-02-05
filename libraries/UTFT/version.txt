@@ -53,14 +53,3 @@ Version:
 				minor changes to the library constructor
 				removed unused variables
 	2.72	12 Dec 2013  -  added support for ElecFreaks TFT-2.4 v1.2
-	2.73	16 Feb 2014  -  added support for Teensy 3.x Boards
-				added support for three display modules from ElecHouse
-				minor bugfixes
-				added three new functions for CPLD-based displays
-	2.74	20 Feb 2014  -  fixed a bug in the serial driver
-	2.75	28 Mar 2014  -  added support for Coldtears 5" and 7" CPLD modules
-	2.76	04 May 2014  -  added support for several display modules from DisplayModule
-	2.77	24 May 2014  -  fixed a bug with the ElecHouse 7" display and shield combination
-	2.78	08 Sep 2014  -  fixed compatibility-issues with Arduino 1.5.7
-	2.79	28 Sep 2014  -  added support for more display shields and modules from ElecFreaks
-				removed all support for display modules from GE-Tech (including the ILI9320 driver)

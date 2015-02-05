@@ -1,6 +1,6 @@
 /*
   UTouch.cpp - Arduino/chipKit library support for Color TFT LCD Touch screens 
-  Copyright (C)2010-2014 Henning Karlsen. All right reserved
+  Copyright (C)2010-2013 Henning Karlsen. All right reserved
   
   Basic functionality of this library are based on the demo-code provided by
   ITead studio. You can find the latest version of the library at
@@ -13,13 +13,6 @@
   This library is free software; you can redistribute it and/or
   modify it under the terms of the CC BY-NC-SA 3.0 license.
   Please see the included documents for further information.
-
-  Commercial use of this library requires you to buy a license that
-  will allow commercial use. This includes using the library,
-  modified or not, as a tool to sell products.
-
-  The license applies to all part of the library including the 
-  examples and tools supplied with the library.
 */
 
 #include "UTouch.h"
@@ -81,8 +74,6 @@ void UTouch::read()
 {
 	unsigned long tx=0, temp_x=0;
 	unsigned long ty=0, temp_y=0;
-	unsigned long minx=99999, maxx=0;
-	unsigned long miny=99999, maxy=0;
 	int datacount=0;
 
 	cbi(P_CS, B_CS);                    
@@ -106,17 +97,6 @@ void UTouch::read()
 				{
 					tx+=temp_x;
 					ty+=temp_y;
-					if (prec>5)
-					{
-						if (temp_x<minx)
-							minx=temp_x;
-						if (temp_x>maxx)
-							maxx=temp_x;
-						if (temp_y<miny)
-							miny=temp_y;
-						if (temp_y>maxy)
-							maxy=temp_y;
-					}
 					datacount++;
 				}
 			}
@@ -124,15 +104,8 @@ void UTouch::read()
 	}
 	pinMode(T_IRQ,  OUTPUT);
 
-	if (prec>5)
-	{
-		tx = tx-(minx+maxx);
-		ty = ty-(miny+maxy);
-		datacount -= 2;
-	}
-
 	sbi(P_CS, B_CS);                    
-	if ((datacount==(prec-2)) or (datacount==PREC_LOW))
+	if (datacount==prec)
 	{
 		if (orient == _default_orientation)
 		{
@@ -222,19 +195,19 @@ void UTouch::setPrecision(byte precision)
 	switch (precision)
 	{
 		case PREC_LOW:
-			prec=1;		// DO NOT CHANGE!
+			prec=1;
 			break;
 		case PREC_MEDIUM:
-			prec=12;	// Iterations + 2
+			prec=10;
 			break;
 		case PREC_HI:
-			prec=27;	// Iterations + 2
+			prec=25;
 			break;
 		case PREC_EXTREME:
-			prec=102;	// Iterations + 2
+			prec=100;
 			break;
 		default:
-			prec=12;	// Iterations + 2
+			prec=10;
 			break;
 	}
 }

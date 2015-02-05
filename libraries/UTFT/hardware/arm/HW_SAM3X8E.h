@@ -1,9 +1,6 @@
 // *** Hardwarespecific functions ***
 void UTFT::_hw_special_init()
 {
-#ifdef EHOUSE_DUE_SHIELD
-    pinMode(24, OUTPUT); digitalWrite(24, HIGH); // Set the TFT_RD pin permanently HIGH as it is not supported by UTFT
-#endif
 }
 
 void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
@@ -69,7 +66,7 @@ void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
 		pulse_low(P_SCL, B_SCL);
 		break;
 	case 8:
-#if defined(CTE_DUE_SHIELD) || defined(EHOUSE_DUE_SHIELD)
+#ifdef CTE_DUE_SHIELD
 		REG_PIOC_CODR=0xFF000;
 		REG_PIOC_SODR=(VH<<12) & 0xFF000;
 		pulse_low(P_WR, B_WR);
@@ -93,12 +90,10 @@ void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
 #endif
 		break;
 	case 16:
-#if defined(CTE_DUE_SHIELD)
+#ifdef CTE_DUE_SHIELD
         REG_PIOC_CODR=0xFF1FE;
 		REG_PIOC_SODR=(VL<<1) & 0x1FE;
 		REG_PIOC_SODR=(VH<<12) & 0xFF000;
-#elif defined(EHOUSE_DUE_SHIELD)
-		PIOC->PIO_ODSR = ((PIOC->PIO_ODSR&(~0x000FF3FC)) | ((((uint32_t)VL)<<2) | (((uint32_t)VH)<<12)));
 #else
 		REG_PIOA_CODR=0x0000C080;
 		REG_PIOC_CODR=0x0000003E;
@@ -120,18 +115,10 @@ void UTFT::_set_direction_registers(byte mode)
 {
 	if (mode!=LATCHED_16)
 	{
-#if defined(CTE_DUE_SHIELD)
+#ifdef CTE_DUE_SHIELD
 		if (mode==16)
 		{
 			REG_PIOC_OER=0x000FF1FE;
-		}
-		else
-			REG_PIOC_OER=0x000FF000;
-#elif defined(EHOUSE_DUE_SHIELD)
-		if (mode==16)
-		{
-			REG_PIOC_OER=0x000FF3FC;
-			REG_PIOC_OWER=0x000FF3FC;
 		}
 		else
 			REG_PIOC_OER=0x000FF000;
@@ -156,12 +143,10 @@ void UTFT::_fast_fill_16(int ch, int cl, long pix)
 {
 	long blocks;
 
-#if defined(CTE_DUE_SHIELD)
+#ifdef CTE_DUE_SHIELD
     REG_PIOC_CODR=0xFF1FE;
 	REG_PIOC_SODR=(cl<<1) & 0x1FE;
 	REG_PIOC_SODR=(ch<<12) & 0xFF000;
-#elif defined(EHOUSE_DUE_SHIELD)
-	PIOC->PIO_ODSR = ((PIOC->PIO_ODSR&(~0x000FF3FC)) | ((((uint32_t)cl)<<2) | (((uint32_t)ch)<<12)));
 #else
 	REG_PIOA_CODR=0x0000C080;
 	REG_PIOC_CODR=0x0000003E;
@@ -203,7 +188,7 @@ void UTFT::_fast_fill_8(int ch, long pix)
 {
 	long blocks;
 
-#if defined(CTE_DUE_SHIELD) || defined(EHOUSE_DUE_SHIELD)
+#ifdef CTE_DUE_SHIELD
     REG_PIOC_CODR=0xFF000;
 	REG_PIOC_SODR=(ch<<12) & 0xFF000;
 #else

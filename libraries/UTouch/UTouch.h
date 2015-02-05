@@ -1,6 +1,6 @@
 /*
   UTouch.h - Arduino/chipKit library support for Color TFT LCD Touch screens 
-  Copyright (C)2010-2014 Henning Karlsen. All right reserved
+  Copyright (C)2010-2013 Henning Karlsen. All right reserved
   
   Basic functionality of this library are based on the demo-code provided by
   ITead studio. You can find the latest version of the library at
@@ -13,19 +13,10 @@
   This library is free software; you can redistribute it and/or
   modify it under the terms of the CC BY-NC-SA 3.0 license.
   Please see the included documents for further information.
-
-  Commercial use of this library requires you to buy a license that
-  will allow commercial use. This includes using the library,
-  modified or not, as a tool to sell products.
-
-  The license applies to all part of the library including the 
-  examples and tools supplied with the library.
 */
 
 #ifndef UTouch_h
 #define UTouch_h
-
-#define UTOUCH_VERSION	124
 
 #if defined(__AVR__)
 	#include "Arduino.h"

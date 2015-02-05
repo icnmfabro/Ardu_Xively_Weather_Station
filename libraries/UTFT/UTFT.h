@@ -1,6 +1,6 @@
 /*
   UTFT.h - Arduino/chipKit library support for Color TFT LCD Boards
-  Copyright (C)2010-2014 Henning Karlsen. All right reserved
+  Copyright (C)2010-2013 Henning Karlsen. All right reserved
   
   This library is the continuation of my ITDB02_Graph, ITDB02_Graph16
   and RGB_GLCD libraries for Arduino and chipKit. As the number of 
@@ -33,19 +33,12 @@
   This library is free software; you can redistribute it and/or
   modify it under the terms of the CC BY-NC-SA 3.0 license.
   Please see the included documents for further information.
-
-  Commercial use of this library requires you to buy a license that
-  will allow commercial use. This includes using the library,
-  modified or not, as a tool to sell products.
-
-  The license applies to all part of the library including the 
-  examples and tools supplied with the library.
 */
 
 #ifndef UTFT_h
 #define UTFT_h
 
-#define UTFT_VERSION	279
+#define UTFT_VERSION	272
 
 #define LEFT 0
 #define RIGHT 9999
@@ -71,8 +64,8 @@
 #define S6D1121_8		14
 #define S6D1121_16		15
 #define	SSD1289LATCHED	16
-//#define NOT_IN_USE	17
-//#define NOT_IN_USE	18
+#define ILI9320_8		17
+#define ILI9320_16		18
 #define SSD1289_8		19
 #define	SSD1963_800ALT	20
 #define ILI9481			21
@@ -83,9 +76,6 @@
 #define ILI9341_S4P		26
 #define R61581			27
 #define ILI9486			28
-#define CPLD			29
-#define HX8353C			30
-#define ST7735_ALT		31
 
 #define ITDB32			0	// HX8347-A (16bit)
 #define ITDB32WC		1	// ILI9327  (16bit)
@@ -93,64 +83,52 @@
 #define ITDB32S			2	// SSD1289  (16bit)
 #define TFT01_32		2	// SSD1289  (16bit)
 #define CTE32			2	// SSD1289  (16bit)
+#define GEEE32			2	// SSD1289  (16bit)
 #define ITDB24			3	// ILI9325C (8bit)
 #define ITDB24D			4	// ILI9325D (8bit)
 #define ITDB24DWOT		4	// ILI9325D (8bit)
 #define ITDB28			4	// ILI9325D (8bit)
 #define TFT01_24_8		4	// ILI9325D (8bit)
-#define DMTFT24104      4   // ILI9325D (8bit)
-#define DMTFT28103      4   // ILI9325D (8bit)
 #define TFT01_24_16		5	// ILI9325D (16bit)
 #define ITDB22			6	// HX8340-B (8bit)
-#define ITDB22SP		7	// HX8340-B (Serial 4Pin)
+#define GEEE22			6	// HX8340-B (8bit)
+#define ITDB22SP		7	// HX8340-B (Serial)
 #define ITDB32WD		8	// HX8352-A (16bit)
 #define TFT01_32WD		8	// HX8352-A	(16bit)
 #define CTE32W			8	// HX8352-A	(16bit)
-#define ITDB18SP		9	// ST7735   (Serial 5Pin)
-#define LPH9135			10	// PCF8833	(Serial 5Pin)
+#define ITDB18SP		9	// ST7735   (Serial)
+#define LPH9135			10	// PCF8833	(Serial)
 #define ITDB25H			11	// S1D19122	(16bit)
 #define ITDB43			12	// SSD1963	(16bit) 480x272
 #define TFT01_43		12	// SSD1963	(16bit) 480x272
 #define ITDB50			13	// SSD1963	(16bit) 800x480
 #define TFT01_50		13	// SSD1963	(16bit) 800x480
 #define CTE50			13	// SSD1963	(16bit) 800x480
-#define EHOUSE50		13	// SSD1963	(16bit) 800x480
 #define ITDB24E_8		14	// S6D1121	(8bit)
 #define TFT01_24R2		14	// S6D1121	(8bit)
 #define ITDB24E_16		15	// S6D1121	(16bit)
 #define INFINIT32		16	// SSD1289	(Latched 16bit) -- Legacy, will be removed later
 #define ELEE32_REVA		16	// SSD1289	(Latched 16bit)
-//#define NOT_IN_USE	17	
-//#define NOT_IN_USE	18	
+#define GEEE24			17	// ILI9320	(8bit)
+#define GEEE28			18	// ILI9320	(16bit)
 #define ELEE32_REVB		19	// SSD1289	(8bit)
 #define TFT01_70		20	// SSD1963	(16bit) 800x480 Alternative Init
 #define CTE70			20	// SSD1963	(16bit) 800x480 Alternative Init
-#define EHOUSE70		20	// SSD1963	(16bit) 800x480 Alternative Init
 #define CTE32HR			21	// ILI9481	(16bit)
 #define CTE28			22	// ILI9325D (16bit) Alternative Init
 #define TFT01_28		22	// ILI9325D (16bit) Alternative Init
 #define CTE22			23	// S6D0164	(8bit)
 #define TFT01_22		23	// S6D0164	(8bit)
-#define DMTFT22102      23  // S6D0164  (8bit)
-#define TFT01_18SP		24	// ST7735S  (Serial 5Pin)
+#define TFT01_18SP		24	// ST7735S  (Serial)
 #define TFT01_22SP		25	// ILI9341	(Serial 5Pin)
-#define TFT01_24SP		25	// ILI9341	(Serial 5Pin)
-#define TFT22SHLD		25	// ILI9341	(Serial 5Pin)
-#define DMTFT28105      25  // ILI9341  (Serial 5Pin)
 #define MI0283QT9		26  // ILI9341	(Serial 4Pin)
 #define CTE35IPS		27	// R61581	(16bit)
 #define CTE40			28	// ILI9486	(16bit)
-#define EHOUSE50CPLD	29	// CPLD		(16bit)
-#define CTE50CPLD		29	// CPLD		(16bit)
-#define CTE70CPLD		29	// CPLD		(16bit)
-#define DMTFT18101      30  // HX8353C  (Serial 5Pin)
-#define TFT18SHLD		31	// ST7735	(Serial 5Pin) Alternative Init
+
 
 #define SERIAL_4PIN		4
 #define SERIAL_5PIN		5
 #define LATCHED_16		17
-
-#define NOTINUSE		255
 
 //*********************************
 // COLORS
@@ -198,7 +176,7 @@ class UTFT
 {
 	public:
 		UTFT();
-		UTFT(byte model, int RS, int WR, int CS, int RST, int SER=0);
+		UTFT(byte model, int RS, int WR,int CS, int RST, int SER=0);
 		void	InitLCD(byte orientation=LANDSCAPE);
 		void	clrScr();
 		void	drawPixel(int x, int y);
@@ -232,9 +210,6 @@ class UTFT
 		void	setContrast(char c);
 		int		getDisplayXSize();
 		int		getDisplayYSize();
-		void	setBrightness(byte br);
-		void	setDisplayPage(byte page);
-		void	setWritePage(byte page);
 
 /*
 	The functions and variables below should not normally be used.
@@ -250,7 +225,6 @@ class UTFT
 		byte			display_model, display_transfer_mode, display_serial_mode;
 		regtype			*P_RS, *P_WR, *P_CS, *P_RST, *P_SDA, *P_SCL, *P_ALE;
 		regsize			B_RS, B_WR, B_CS, B_RST, B_SDA, B_SCL, B_ALE;
-		byte			__p1, __p2, __p3, __p4, __p5;
 		_current_font	cfont;
 		boolean			_transparent;
 
