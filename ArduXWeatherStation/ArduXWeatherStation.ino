@@ -1,6 +1,6 @@
 
 // Integration and Development Copyright (c) 2015 Massimiliano Neri
-// ArduXWeatherStation V. 1.2
+// ArduXWeatherStation V. 1.2.1
 // E-mail: icnmfabro@gmail.com
 
 // Arduino Wire library 
@@ -264,7 +264,7 @@ void setup() {
                       // OR setting current local hPa information from a weather station/local airport (QNH).
   
     long ALTITUDEWS = ALTITUDE * 100;
-    dps.init(MODE_ULTRA_HIGHRES, 36400, true);  // geographical altitude weather station, true = using meter units
+    dps.init(MODE_ULTRA_HIGHRES, ALTITUDEWS, true);  // geographical altitude weather station, true = using meter units
                       // this initialization is useful if current altitude is known,
                       // pressure will be calculated based on TruePressure and known altitude.
 
